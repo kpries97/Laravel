@@ -1,4 +1,4 @@
-# FILEPATH: /var/www/html/Laravel/.github/workflows/CD.yml
+
 name: CD Pipeline
 
 on:
