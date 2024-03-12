@@ -1,29 +1,24 @@
-name: CI
+name: Ci
 
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches: [ master ]
 
 jobs:
-    build:
-
-        runs-on: ubuntu-latest
-
-        steps:
-        - name: Checkout code
-            uses: actions/checkout@v2
-
-        - name: Set up PHP
-            uses: shivammathur/setup-php@v2
-            with:
-                php-version: '7.4'
-
-        - name: Install dependencies
-            run: composer install --prefer-dist --no-progress --no-suggest
-
-        - name: Run PHPUnit tests
-            run: vendor/bin/phpunit
-
-        - name: Run PHPStan
-            run: vendor/bin/phpstan analyze --level=7 --no-progress
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Deploy to digitalocean server
+          uses: appleboy/ssh-action@v1.0.3
+          with:
+            host: 161.35.67.249
+            username: bedev2024
+            password: dummy
+            script: |
+                cd /var/www/html/App
+                git pull
+                composer install --no-dev
+                php artisan migrate
+                php artisan config:cache
+                php artisan route:cache
+                php artisan view:cache
