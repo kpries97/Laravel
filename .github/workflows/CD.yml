@@ -1,7 +1,7 @@
 name: CD workflow
 
 on:
-  push:
+  push: master
     branches: [ master ]
 
 jobs:
