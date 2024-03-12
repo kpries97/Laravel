@@ -1,0 +1,25 @@
+name: CD Pipeline
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            name: Deploy 
+            uses: appleboy/ssh-action@v1.0.3
+            with:
+              host: 161.35.67.249 
+              username: bedev2024
+              password: dummy
+              script: |
+                  cd /var/www/html/App/imandic
+                  git pull
+                  composer install --no-dev
+                  php artisan migrate
+                  php artisan config:cache
+                  php artisan route:cache
